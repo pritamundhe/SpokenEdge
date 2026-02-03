@@ -1,46 +1,254 @@
 @import "tailwindcss";
 
 :root {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 10, 10, 10;
-  --background-end-rgb: 0, 0, 0;
+  /* LIGHT MODE: Clean Tech (Unchanged) */
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --primary: #2563eb;
+  --primary-glow: #e0e7ff;
+  --accent: #0ea5e9;
+  --surface: rgba(255, 255, 255, 0.8);
+  --border: #e2e8f0;
+  --aurora-opacity: 0;
+}
+
+:root.dark {
+  /* DARK MODE: Aurora AI (Cassis/Raycast Style) */
+  --background: #000000;
+  /* Pure Black */
+  --foreground: #f8fafc;
+  --primary: #2dd4bf;
+  /* Teal-400 */
+  --primary-glow: #14b8a6;
+  --accent: #10b981;
+  /* Emerald-500 */
+  --surface: rgba(255, 255, 255, 0.03);
+  --border: rgba(255, 255, 255, 0.1);
+  --aurora-opacity: 1;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
-  min-height: 100vh;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.glass-nav {
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+/* --- Aurora Background Animation (Top Focused) --- */
+.bg-beams {
+  position: absolute;
+  top: -200px;
+  left: -20%;
+  width: 140vw;
+  /* Wider spread */
+  height: 120vh;
+  /* Taller coverage */
+  background: transparent;
+  background-image:
+    radial-gradient(ellipse at 50% 0%, rgba(45, 212, 191, 0.45) 0%, transparent 70%),
+    radial-gradient(ellipse at 20% 0%, rgba(6, 182, 212, 0.4) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 0%, rgba(16, 185, 129, 0.4) 0%, transparent 60%);
+  filter: blur(120px);
+  /* Massive blur for clearer 'light' effect */
+  z-index: 0;
+  opacity: var(--aurora-opacity);
+  pointer-events: none;
+  animation: aurora-pulse 6s infinite alternate ease-in-out;
+  /* Faster pulse */
+  transform: translateZ(0);
 }
 
-.glass-card {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+/* A secondary moving layer for dynamic wave effect */
+.bg-beams::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 200%;
+  height: 100%;
+  background-image:
+    conic-gradient(from 0deg at 50% -20%, transparent 35%, rgba(45, 212, 191, 0.25) 50%, transparent 65%);
+  animation: aurora-spin 15s linear infinite;
+  /* Faster spin */
+  opacity: 0.8;
+  mix-blend-mode: color-dodge;
+  /* Brighter blending */
 }
 
-.text-gradient {
-  background: linear-gradient(to right, #6EE7B7, #3B82F6, #9333EA);
-  background-clip: text;
+@keyframes aurora-pulse {
+  0% {
+    opacity: 0.7;
+    transform: scaleY(1) scaleX(1);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scaleY(1.15) scaleX(1.05);
+  }
+}
+
+@keyframes aurora-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* --- Typography --- */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--foreground);
+  letter-spacing: -0.02em;
+  /* Slightly tighter like Linear/Cassis */
+  font-weight: 600;
+  /* Not fully bold, cleaner */
+}
+
+/* Custom Text Selection (Aurora Style) */
+::selection {
+  background: rgba(45, 212, 191, 0.3);
+  /* Teal-400 with opacity */
+  color: #5eead4;
+  /* Teal-300 text highlight */
+  text-shadow: 0 0 10px rgba(45, 212, 191, 0.5);
+}
+
+/* Text Glow - Dynamic Gradient Text Only */
+.text-glow {
+  background: linear-gradient(to right, #2563eb, #06b6d4);
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+  /* Fixes gradient clip in some browsers */
 }
 
-.btn-primary {
-  background: linear-gradient(to right, #3B82F6, #9333EA);
+:root.dark .text-glow {
+  background: linear-gradient(to right, #2dd4bf, #34d399, #22d3ee);
+  filter: drop-shadow(0 0 25px rgba(45, 212, 191, 0.4));
+}
+
+p {
+  color: #64748b;
+}
+
+:root.dark p {
+  color: #a1a1aa;
+  /* Zinc 400 - clean grey */
+}
+
+/* --- Premium Glass Utilities --- */
+
+/* Glass Panel: Stealth Mode */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  /* Slightly tighter radius */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
 }
 
+:root.dark .glass-panel {
+  /* Rich Dark Glass - Linear Gradient for subtle specular depth */
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  /* Stronger top edge light */
+
+  /* Inner shadow + Drop shadow for 3D glass effect */
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.05),
+    0 8px 32px rgba(0, 0, 0, 0.6);
+
+  backdrop-filter: blur(24px);
+  /* Heavier blur */
+  -webkit-backdrop-filter: blur(24px);
+}
+
+.glass-panel:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+:root.dark .glass-panel:hover {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border-color: rgba(45, 212, 191, 0.4);
+  /* Stronger Teal tint on hover */
+  box-shadow:
+    0 0 40px rgba(45, 212, 191, 0.15),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Primary Button: Teal/Emerald */
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  padding: 0.75rem 2rem;
+  /* Clean sizing */
+  border-radius: 9999px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+:root.dark .btn-primary {
+  background: #f8fafc;
+  /* White button on black bg (Cassis style) */
+  color: black;
+  border: none;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
 .btn-primary:hover {
-  opacity: 0.9;
   transform: translateY(-1px);
-  box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+:root.dark .btn-primary:hover {
+  background: #e2e8f0;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+}
+
+/* Secondary Button */
+.btn-secondary {
+  background: white;
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  padding: 0.75rem 2.5rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+:root.dark .btn-secondary {
+  background: black;
+  color: #a1a1aa;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+}
+
+.btn-secondary:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+:root.dark .btn-secondary:hover {
+  color: white;
+  border-color: rgba(255, 255, 255, 0.4);
 }

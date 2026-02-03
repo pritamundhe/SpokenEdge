@@ -122,7 +122,7 @@ export default function Profile() {
     if (!user) return null;
 
     return (
-        <main className="min-h-screen bg-black text-white relative">
+        <main className="min-h-screen text-gray-900 dark:text-white relative">
             <Navbar />
 
             <div className="pt-32 pb-20 px-4">
@@ -130,7 +130,7 @@ export default function Profile() {
                     <h1 className="text-3xl font-bold mb-8 text-center text-gradient">Your Profile</h1>
 
                     {message && (
-                        <div className={`p-4 rounded-lg mb-6 text-center ${message.includes('success') ? 'bg-green-500/20 text-green-400' : 'bg-blue-500/20 text-blue-400'}`}>
+                        <div className={`p-4 rounded-lg mb-6 text-center ${message.includes('success') ? 'bg-green-500/20 text-green-600 dark:text-green-400' : 'bg-blue-500/20 text-blue-600 dark:text-blue-400'}`}>
                             {message}
                         </div>
                     )}
@@ -142,7 +142,7 @@ export default function Profile() {
                                 onImageChange={(base64, file) => setFormData({ ...formData, profileImage: base64, file: file })}
                             />
                         ) : (
-                            <div className="w-32 h-32 rounded-full overflow-hidden border-2 border-purple-500 shadow-lg bg-gray-800 flex items-center justify-center text-4xl font-bold">
+                            <div className="w-32 h-32 rounded-full overflow-hidden border-2 border-purple-500 shadow-lg bg-gray-200 dark:bg-gray-800 flex items-center justify-center text-4xl font-bold text-gray-500 dark:text-gray-400">
                                 {user.profileImage ? (
                                     <img src={user.profileImage} alt={user.name} className="w-full h-full object-cover" />
                                 ) : (
@@ -153,8 +153,8 @@ export default function Profile() {
 
                         {!editing ? (
                             <div className="text-center space-y-2 w-full">
-                                <h2 className="text-2xl font-bold">{user.name}</h2>
-                                <p className="text-gray-400">{user.email}</p>
+                                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{user.name}</h2>
+                                <p className="text-gray-600 dark:text-gray-400">{user.email}</p>
                                 <button
                                     onClick={() => setEditing(true)}
                                     className="mt-6 btn-primary px-6 py-2 rounded-full text-sm font-bold"
@@ -165,20 +165,20 @@ export default function Profile() {
                         ) : (
                             <form onSubmit={handleUpdate} className="w-full space-y-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-400 mb-1">Full Name</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
                                     <input
                                         type="text"
                                         value={formData.name}
                                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                        className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-purple-500"
+                                        className="w-full bg-white/50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg px-4 py-3 text-gray-900 dark:text-white focus:outline-none focus:border-purple-500"
                                     />
                                 </div>
 
                                 <div className="flex gap-4 pt-4">
-                                    <button type="button" onClick={() => setEditing(false)} className="flex-1 bg-gray-700 hover:bg-gray-600 rounded-lg py-3 font-bold transition-colors">
+                                    <button type="button" onClick={() => setEditing(false)} className="flex-1 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-lg py-3 font-bold transition-colors text-gray-900 dark:text-white">
                                         Cancel
                                     </button>
-                                    <button type="submit" className="flex-1 btn-primary rounded-lg py-3 font-bold">
+                                    <button type="submit" className="flex-1 btn-primary rounded-lg py-3 font-bold text-white">
                                         Save Changes
                                     </button>
                                 </div>
