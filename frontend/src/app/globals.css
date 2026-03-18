@@ -1,29 +1,113 @@
 @import "tailwindcss";
 
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+}
+
 :root {
-  /* LIGHT MODE: Clean Tech (Unchanged) */
+  /* LIGHT MODE: Clean Tech */
   --background: #ffffff;
   --foreground: #0f172a;
+  /* Slate 900 */
+
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+
   --primary: #2563eb;
-  --primary-glow: #e0e7ff;
-  --accent: #0ea5e9;
-  --surface: rgba(255, 255, 255, 0.8);
+  /* Blue 600 */
+  --primary-foreground: #ffffff;
+
+  --secondary: #f1f5f9;
+  /* Slate 100 */
+  --secondary-foreground: #0f172a;
+
+  --accent: #f1f5f9;
+  /* Slate 100 */
+  --accent-foreground: #0f172a;
+
+  --destructive: #ef4444;
+  /* Red 500 */
+  --destructive-foreground: #ffffff;
+
+  --muted: #f1f5f9;
+  /* Slate 100 */
+  --muted-foreground: #64748b;
+  /* Slate 500 */
+
   --border: #e2e8f0;
+  /* Slate 200 */
+  --input: #e2e8f0;
+  --ring: #2563eb;
+
+  --radius: 0.75rem;
+
   --aurora-opacity: 0;
 }
 
 :root.dark {
-  /* DARK MODE: Aurora AI (Cassis/Raycast Style) */
+  /* DARK MODE: Aurora AI */
   --background: #000000;
   /* Pure Black */
   --foreground: #f8fafc;
+  /* Slate 50 */
+
+  --card: #09090b;
+  /* Zinc 950 */
+  --card-foreground: #f8fafc;
+
+  --popover: #09090b;
+  --popover-foreground: #f8fafc;
+
   --primary: #2dd4bf;
-  /* Teal-400 */
-  --primary-glow: #14b8a6;
-  --accent: #10b981;
-  /* Emerald-500 */
-  --surface: rgba(255, 255, 255, 0.03);
-  --border: rgba(255, 255, 255, 0.1);
+  /* Teal 400 */
+  --primary-foreground: #000000;
+
+  --secondary: #27272a;
+  /* Zinc 800 */
+  --secondary-foreground: #f8fafc;
+
+  --accent: #27272a;
+  /* Zinc 800 */
+  --accent-foreground: #f8fafc;
+
+  --destructive: #7f1d1d;
+  /* Red 900 */
+  --destructive-foreground: #f8fafc;
+
+  --muted: #18181b;
+  /* Zinc 900 */
+  --muted-foreground: #a1a1aa;
+  /* Zinc 400 */
+
+  --border: #27272a;
+  /* Zinc 800 */
+  --input: #27272a;
+  --ring: #2dd4bf;
+
   --aurora-opacity: 1;
 }
 
@@ -36,6 +120,7 @@ body {
   overflow-x: hidden;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
+
 
 /* --- Aurora Background Animation (Top Focused) --- */
 .bg-beams {
@@ -134,17 +219,12 @@ h6 {
 }
 
 :root.dark .text-glow {
-  background: linear-gradient(to right, #2dd4bf, #34d399, #22d3ee);
+  background-image: linear-gradient(to right, #2dd4bf, #34d399, #22d3ee);
   filter: drop-shadow(0 0 25px rgba(45, 212, 191, 0.4));
 }
 
 p {
-  color: #64748b;
-}
-
-:root.dark p {
-  color: #a1a1aa;
-  /* Zinc 400 - clean grey */
+  color: var(--muted-foreground);
 }
 
 /* --- Premium Glass Utilities --- */
@@ -156,7 +236,6 @@ p {
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border);
   border-radius: 12px;
-  /* Slightly tighter radius */
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
 }
@@ -178,6 +257,7 @@ p {
   -webkit-backdrop-filter: blur(24px);
 }
 
+
 .glass-panel:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
@@ -192,10 +272,11 @@ p {
     inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
 }
 
+
 /* Primary Button: Teal/Emerald */
 .btn-primary {
   background: var(--primary);
-  color: white;
+  color: var(--primary-foreground);
   padding: 0.75rem 2rem;
   /* Clean sizing */
   border-radius: 9999px;
@@ -208,16 +289,13 @@ p {
 }
 
 :root.dark .btn-primary {
-  background: #f8fafc;
-  /* White button on black bg (Cassis style) */
-  color: black;
-  border: none;
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
 }
 
 .btn-primary:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  opacity: 0.9;
 }
 
 :root.dark .btn-primary:hover {
@@ -227,7 +305,7 @@ p {
 
 /* Secondary Button */
 .btn-secondary {
-  background: white;
+  background: var(--background);
   color: var(--foreground);
   border: 1px solid var(--border);
   padding: 0.75rem 2.5rem;
@@ -244,8 +322,9 @@ p {
 }
 
 .btn-secondary:hover {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+  border-color: var(--border);
 }
 
 :root.dark .btn-secondary:hover {

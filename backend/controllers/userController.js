@@ -49,3 +49,42 @@ export const updateProfile = async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 };
+
+export const searchUsers = async (req, res) => {
+    try {
+        const { query } = req.query;
+        if (!query) {
+            return res.status(400).json({ message: 'Search query is required' });
+        }
+
+        const users = await User.find({
+            $and: [
+                { _id: { $ne: req.userId } }, // Exclude current user
+                {
+                    $or: [
+                        { name: { $regex: query, $options: 'i' } },
+                        { email: { $regex: query, $options: 'i' } }
+                    ]
+                }
+            ]
+        }).select('name email profileImage preferredLanguage');
+
+        res.status(200).json(users);
+    } catch (error) {
+        console.error('Search Users Error:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+
+export const getUserById = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id).select('name email profileImage preferredLanguage nativeLanguage learningGoals createdAt');
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        console.error('Get User By ID Error:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};

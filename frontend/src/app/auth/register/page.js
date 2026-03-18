@@ -21,7 +21,7 @@ export default function Register() {
             });
 
             if (res.ok) {
-                router.push('/login');
+                router.push('/auth/login');
             } else {
                 const data = await res.json();
                 setError(data.message || 'Registration failed');
@@ -91,7 +91,7 @@ export default function Register() {
 
                 <p className="mt-6 text-center text-gray-600 dark:text-gray-400">
                     Already have an account?{' '}
-                    <Link href="/login" className="text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300">
+                    <Link href="/auth/login" className="text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300">
                         Sign in
                     </Link>
                 </p>

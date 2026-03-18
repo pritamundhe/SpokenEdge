@@ -8,6 +8,7 @@ export default function Navbar() {
     const [mounted, setMounted] = useState(false);
     const router = useRouter();
     const [theme, setTheme] = useState('dark');
+    const [showDropdown, setShowDropdown] = useState(false);
 
     useEffect(() => {
         setMounted(true);
@@ -51,52 +52,100 @@ export default function Navbar() {
     const handleLogout = () => {
         localStorage.removeItem('token');
         setUser(null);
-        router.push('/login');
+        router.push('/auth/login');
     };
 
     return (
-        <nav className="fixed w-full z-50 top-0 left-0 border-b border-transparent dark:border-white/5 bg-white/80 dark:bg-black/10 backdrop-blur-md transition-all duration-300">
+        <nav className="fixed w-full z-50 top-0 left-0 border-b border-transparent dark:border-border bg-background/80 backdrop-blur-md transition-all duration-300">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                     <div className="flex items-center">
-                        <Link href="/" className="text-2xl font-bold font-sans tracking-tight">
-                            <span className="text-black dark:text-white">Spoken</span>
-                            <span className="text-black dark:text-blue-500">Edge</span>
+                        <Link href="/" className="flex items-center gap-2 group">
+                            <div className="text-2xl font-bold font-sans tracking-tighter flex items-center">
+                                <span className="text-foreground">Spoken</span>
+                                <span className="text-primary">Edge</span>
+                                <div className="w-1.5 h-1.5 rounded-full bg-primary ml-0.5 animate-pulse"></div>
+                            </div>
                         </Link>
                     </div>
                     <div className="hidden md:block">
                         <div className="ml-10 flex items-baseline space-x-4 items-center">
-                            <Link href="/" className="text-black hover:text-gray-600 dark:text-gray-300 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                            <Link href="/" className="text-foreground/80 hover:text-foreground px-3 py-2 rounded-md text-sm font-medium transition-colors">
                                 Home
                             </Link>
                             {!mounted ? null : !user ? (
                                 <>
-                                    <Link href="/login" className="text-black hover:text-gray-600 dark:text-gray-300 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                                    <Link href="/auth/login" className="text-foreground/80 hover:text-foreground px-3 py-2 rounded-md text-sm font-medium transition-colors">
                                         Login
                                     </Link>
-                                    <Link href="/register" className="bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-gray-200 px-4 py-2 rounded-xl text-sm font-medium transition-colors shadow-lg shadow-black/20">
+                                    <Link href="/auth/register" className="bg-foreground text-background hover:opacity-90 px-4 py-2 rounded-xl text-sm font-medium transition-colors shadow-lg shadow-black/20">
                                         Get Started
                                     </Link>
                                 </>
                             ) : (
                                 <>
-                                    <Link href="/practice" className="text-black hover:text-black/70 dark:text-gray-300 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                                    <Link href="/practice" className="text-foreground/80 hover:text-foreground px-3 py-2 rounded-md text-sm font-medium transition-colors">
                                         Practice
                                     </Link>
-                                    <Link href="/dashboard" className="text-black hover:text-black/70 dark:text-gray-300 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                                    <Link href="/dashboard" className="text-foreground/80 hover:text-foreground px-3 py-2 rounded-md text-sm font-medium transition-colors">
                                         Dashboard
                                     </Link>
-                                    <Link href="/profile" className="text-black hover:text-black/70 dark:text-gray-300 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
-                                        Profile
+                                    <Link href="/users" className="text-foreground/80 hover:text-foreground px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                                        Community
                                     </Link>
-                                    <button onClick={handleLogout} className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 px-3 py-2 rounded-md text-sm font-medium transition-colors">
-                                        Logout
-                                    </button>
+                                    <div className="relative">
+                                        <button
+                                            onClick={() => setShowDropdown(!showDropdown)}
+                                            className="relative group focus:outline-none"
+                                        >
+                                            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/50 hover:border-primary transition-all shadow-md hover:shadow-lg bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold">
+                                                {user.profileImage ? (
+                                                    <img src={user.profileImage} alt={user.name} className="w-full h-full object-cover" />
+                                                ) : (
+                                                    <span className="text-sm">{(user.name?.charAt(0) || 'U').toUpperCase()}</span>
+                                                )}
+                                            </div>
+                                            {/* Verification Badge */}
+                                            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-primary rounded-full flex items-center justify-center border-2 border-background">
+                                                <svg className="w-2.5 h-2.5 text-primary-foreground" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                                </svg>
+                                            </div>
+                                        </button>
+
+                                        {/* Dropdown Menu */}
+                                        {showDropdown && (
+                                            <div className="absolute right-0 mt-2 w-48 bg-card text-card-foreground rounded-xl shadow-lg border-2 border-border py-2 z-50">
+                                                <Link
+                                                    href="/profile"
+                                                    onClick={() => setShowDropdown(false)}
+                                                    className="flex items-center gap-3 px-4 py-2 hover:bg-accent hover:text-accent-foreground transition-colors"
+                                                >
+                                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                                    </svg>
+                                                    View Profile
+                                                </Link>
+                                                <button
+                                                    onClick={() => {
+                                                        handleLogout();
+                                                        setShowDropdown(false);
+                                                    }}
+                                                    className="w-full flex items-center gap-3 px-4 py-2 hover:bg-destructive/10 text-destructive transition-colors"
+                                                >
+                                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                                    </svg>
+                                                    Logout
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>
                                 </>
                             )}
                             <button
                                 onClick={toggleTheme}
-                                className="p-2 rounded-full text-black hover:text-gray-700 dark:text-gray-300 dark:hover:text-white transition-colors focus:outline-none"
+                                className="p-2 rounded-full text-foreground/80 hover:text-foreground transition-colors focus:outline-none"
                                 aria-label="Toggle Dark Mode"
                             >
                                 {mounted && (theme === 'dark' ? (

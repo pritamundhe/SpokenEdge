@@ -20,6 +20,24 @@ const UserSchema = new mongoose.Schema(
             type: String,
             default: '',
         },
+        preferredLanguage: {
+            type: String,
+            default: 'en-US',
+        },
+        nativeLanguage: {
+            type: String,
+            default: 'en',
+        },
+        learningGoals: [String],
+        settings: {
+            autoPlayAI: { type: Boolean, default: true },
+            showGrammarHints: { type: Boolean, default: true },
+            difficultyLevel: {
+                type: String,
+                enum: ['beginner', 'intermediate', 'advanced'],
+                default: 'intermediate'
+            },
+        },
     },
     { timestamps: true }
 );

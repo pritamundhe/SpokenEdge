@@ -34,15 +34,33 @@ connectDB();
 // Routes
 import authRoutes from './routes/auth.js';
 import userRoutes from './routes/user.js';
+import deepseekRoutes from './routes/deepseek.js';
+import geminiRoutes from './routes/gemini.js';
+import sessionRoutes from './routes/session.js';
+import analyticsRoutes from './routes/analytics.js';
+import roleplayRoutes from './routes/roleplay.js';
+import audioRoutes from './routes/audio.js';
 
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/deepseek', deepseekRoutes);
+app.use('/api/gemini', geminiRoutes);
+app.use('/api/session', sessionRoutes);
+app.use('/api/analytics', analyticsRoutes);
+app.use('/api/roleplay', roleplayRoutes);
+app.use('/api/audio', audioRoutes);
 
 app.get('/', (req, res) => {
   res.send('API is running...');
 });
 
 // Start Server
-app.listen(PORT, () => {
+import http from 'http';
+import { initSocket } from './services/socketService.js';
+
+const server = http.createServer(app);
+initSocket(server);
+
+server.listen(PORT, () => {
   console.log(`🚀 Server is running on http://localhost:${PORT}`);
 });
